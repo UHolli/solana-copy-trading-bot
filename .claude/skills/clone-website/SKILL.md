@@ -40,9 +40,24 @@ Extract the actual text, images, videos, and SVGs from the live site. This is a 
 
 Nothing can be built until the foundation exists: global CSS with the target site's design tokens (colors, fonts, spacing), TypeScript types for the content structures, and global assets (fonts, favicons). This is sequential and non-negotiable. Everything after this can be parallel.
 
-### 5. Extract Exact CSS — Never Eyeball It
+### 5. Extract How It Looks AND How It Behaves
 
-Use `getComputedStyle()` via Chrome MCP JavaScript execution for every element. Not "it looks like 16px" — extract the actual computed value. Every font size, font weight, line height, letter spacing, color, padding, margin, gap, border radius, box shadow, background, display, flex direction, position, z-index, width, height, max-width, overflow, opacity, transform, transition. The precision of your CSS extraction directly determines the quality of the clone.
+A website is not a screenshot — it's a living thing. Elements move, change, appear, and disappear in response to scrolling, hovering, clicking, resizing, and time. If you only extract the static CSS of each element, your clone will look right in a screenshot but feel dead when someone actually uses it.
+
+For every element, extract its **appearance** (exact computed CSS via `getComputedStyle()`) AND its **behavior** (what changes, what triggers the change, and how the transition happens). Not "it looks like 16px" — extract the actual computed value. Not "the nav changes on scroll" — document the exact trigger (scroll position, IntersectionObserver threshold, viewport intersection), the before and after states (both sets of CSS values), and the transition (duration, easing, CSS transition vs. JS-driven vs. CSS `animation-timeline`).
+
+Examples of behaviors to watch for — these are illustrative, not exhaustive. The page may do things not on this list, and you must catch those too:
+- A navbar that shrinks, changes background, or gains a shadow after scrolling past a threshold
+- Elements that animate into view when they enter the viewport (fade-up, slide-in, stagger delays)
+- Sections that snap into place on scroll (`scroll-snap-type`)
+- Parallax layers that move at different rates than the scroll
+- Hover states that animate (not just change — the transition duration and easing matter)
+- Dropdowns, modals, accordions with enter/exit animations
+- Scroll-driven progress indicators or opacity transitions
+- Auto-playing carousels or cycling content
+- Dark-to-light (or any theme) transitions between page sections
+
+**How to detect behaviors:** Don't just inspect the static DOM. Scroll the page slowly top to bottom and watch what moves, fades, slides, snaps, or changes. Hover over interactive elements. Click things that look clickable. Resize the viewport. The page will reveal its behaviors if you interact with it. Use Chrome MCP to scroll programmatically and observe DOM/style changes at different scroll positions.
 
 ### 6. Build Must Always Compile
 
@@ -137,11 +152,13 @@ This is the core loop. For each section in your page topology (top to bottom):
    - Interactive elements: all the above + hover/active/focus state changes, cursor, transition, transform
    - Images/videos: objectFit, borderRadius, width, height, any mix-blend-mode or filter
 
-3. **Extract real content** — all text, alt attributes, aria labels, placeholder text. Use `element.textContent` for each text node.
+3. **Extract behaviors** — scroll to this section, interact with it, and document everything that moves, changes, or animates. For each behavior, capture: what triggers it, the before state, the after state, and the transition (CSS transition properties, keyframe animation name/params, or JS mechanism). Scroll the page to observe scroll-triggered changes. Hover over elements to observe hover transitions. Check if elements have `position: sticky` and at what offset. Check for IntersectionObserver usage (elements that animate in on viewport entry). Check for scroll-snap alignment on containers or children.
 
-4. **Identify assets** this section uses — which downloaded images/videos from `public/`, which icon components from `icons.tsx`.
+4. **Extract real content** — all text, alt attributes, aria labels, placeholder text. Use `element.textContent` for each text node.
 
-5. **Assess complexity** — how many distinct sub-components does this section contain? A distinct sub-component is an element with its own unique styling, structure, and behavior (e.g., a card, a nav item, a search panel).
+5. **Identify assets** this section uses — which downloaded images/videos from `public/`, which icon components from `icons.tsx`.
+
+6. **Assess complexity** — how many distinct sub-components does this section contain? A distinct sub-component is an element with its own unique styling, structure, and behavior (e.g., a card, a nav item, a search panel).
 
 ### Dispatch
 
@@ -154,6 +171,7 @@ Based on complexity, dispatch builder agent(s) in worktree(s):
 **What every builder agent receives:**
 - Path to the section screenshot in `docs/design-references/`
 - The complete CSS spec for every element (exact values, not approximations)
+- Every behavior this section exhibits: what triggers it, before/after states, transition properties, and the implementation approach (CSS transition, scroll listener, IntersectionObserver, keyframe animation, etc.)
 - Which assets to use (local paths in `public/`)
 - The actual text content (not descriptions of text)
 - Which shared components to import (`icons.tsx`, `cn()`, shadcn primitives)
