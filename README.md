@@ -1,4 +1,4 @@
-# AI Website Clone Template
+# AI Website Cloner Template
 
 A reusable template for reverse-engineering any website and rebuilding it as a pixel-perfect clone using [Claude Code](https://docs.anthropic.com/en/docs/claude-code).
 
