@@ -97,7 +97,7 @@ Edit **`TARGET.md`** before cloning if you want fine-grained control:
 - **Scope** — what's in/out of scope
 - **Customization plans** — modifications to apply after the base clone
 
-If you skip this, `/clone-website <url>` will default to a pixel-perfect clone of the home page.
+If you skip this, `/clone-website <url>` will default to a pixel-perfect clone of the home page. 
 
 ## Star History
 
