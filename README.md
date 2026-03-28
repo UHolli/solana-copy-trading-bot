@@ -31,7 +31,6 @@ Point it at a URL, run `/clone-website`, and Claude Code will inspect the site v
    ```
 5. **Customize** (optional) — after the base clone is built, modify as needed
 
-> **Tip:** You can optionally edit `TARGET.md` before cloning to specify pages, fidelity level, and scope — but it's not required. The `/clone-website` skill will handle everything from just the URL.
 
 ## Prerequisites
 
@@ -76,7 +75,6 @@ docs/
   research/         # Extraction output & component specs
   design-references/ # Screenshots
 scripts/            # Asset download scripts
-TARGET.md           # Clone target configuration
 AGENTS.md           # Agent instructions & code style
 ```
 
@@ -88,16 +86,9 @@ npm run build  # Production build
 npm run lint   # ESLint check
 ```
 
-## Configuration (Optional)
+## Defaults
 
-Edit **`TARGET.md`** before cloning if you want fine-grained control:
-
-- **Pages** — which pages to replicate (default: home page)
-- **Fidelity** — pixel-perfect, high fidelity, or structural
-- **Scope** — what's in/out of scope
-- **Customization plans** — modifications to apply after the base clone
-
-If you skip this, `/clone-website <url>` will default to a pixel-perfect clone of the home page. 
+`/clone-website <url>` defaults to a pixel-perfect clone of whatever page is at that URL. No extra configuration needed. The skill handles scope, fidelity, and asset extraction automatically.
 
 ## Star History
 
