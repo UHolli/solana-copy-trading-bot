@@ -1,7 +1,31 @@
 {
   "name": "ai-website-clone-template",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
+  "description": "A reusable template for reverse-engineering any website and rebuilding it as a pixel-perfect clone using Claude Code",
+  "author": "JCodesMore",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JCodesMore/ai-website-cloner-template.git"
+  },
+  "homepage": "https://github.com/JCodesMore/ai-website-cloner-template",
+  "bugs": {
+    "url": "https://github.com/JCodesMore/ai-website-cloner-template/issues"
+  },
+  "keywords": [
+    "claude-code",
+    "website-clone",
+    "reverse-engineering",
+    "nextjs",
+    "ai",
+    "template",
+    "tailwindcss",
+    "shadcn-ui"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
