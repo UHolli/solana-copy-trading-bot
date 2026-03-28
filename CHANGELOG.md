@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-03-28
+
+### Added
+- Multi-platform AI agent support: Claude Code, Codex CLI, OpenCode, GitHub Copilot, Cursor, Windsurf, Gemini CLI, Cline/Roo Code, Continue, Amazon Q, Augment Code, Aider
+- Platform-specific instruction files and `/clone-website` skill for each supported agent
+- `scripts/sync-agent-rules.sh` to regenerate platform instruction files from AGENTS.md
+- `scripts/sync-skills.mjs` to regenerate `/clone-website` skill across all platforms
+- GEMINI.md for Gemini CLI configuration
+- Supported Platforms table in README
+- "Updating for Other Platforms" documentation section in README
+
+### Changed
+- README now describes the project as multi-agent (Claude Code recommended, not required)
+- AGENTS.md updated with sync script reminders
+
 ## [0.1.1] - 2026-03-28
 
 ### Added

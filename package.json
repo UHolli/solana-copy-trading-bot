@@ -1,8 +1,8 @@
 {
   "name": "ai-website-clone-template",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "private": true,
-  "description": "A reusable template for reverse-engineering any website and rebuilding it as a pixel-perfect clone using Claude Code",
+  "description": "A reusable template for reverse-engineering any website and rebuilding it as a pixel-perfect clone using AI coding agents",
   "author": "JCodesMore",
   "license": "MIT",
   "repository": {
