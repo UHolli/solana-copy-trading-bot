@@ -18,9 +18,3 @@
 
 - [ ] `npm run build` passes
 - [ ] `npm run lint` passes
-- [ ] Tested on desktop and mobile (if visual changes)
-- [ ] Screenshots attached (if visual changes)
-
-## Screenshots
-
-<!-- Before/after screenshots if applicable -->
