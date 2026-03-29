@@ -29,7 +29,7 @@ Point it at a URL, run `/clone-website`, and your AI agent will inspect the site
    ```
 4. **Run the skill**:
    ```
-   /clone-website <target-url>
+   /clone-website <target-url1> [<target-url2> ...]
    ```
 5. **Customize** (optional) — after the base clone is built, modify as needed
 
