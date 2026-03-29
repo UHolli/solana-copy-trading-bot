@@ -14,7 +14,7 @@ Point it at a URL, run `/clone-website`, and your AI agent will inspect the site
 
 ## Quick Start
 
-1. **Clone this repo**
+1. **Clone this repository**
    ```bash
    git clone https://github.com/JCodesMore/ai-website-cloner-template.git my-clone
    cd my-clone
