@@ -34,6 +34,7 @@ fi
 # Lines like "@docs/research/INSPECTION_GUIDE.md" become the file's contents.
 resolve_imports() {
   while IFS= read -r line || [[ -n "$line" ]]; do
+    line="${line%$'\r'}"
     if [[ "$line" =~ ^@(.+)$ ]]; then
       local import_path="${BASH_REMATCH[1]}"
       local resolved="$REPO_ROOT/$import_path"
