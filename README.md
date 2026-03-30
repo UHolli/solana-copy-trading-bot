@@ -84,7 +84,6 @@ Each builder agent receives the full component specification inline — exact `g
 
 - **Platform migration** — rebuild a site you own from WordPress/Webflow/Squarespace into a modern Next.js codebase
 - **Lost source code** — your site is live but the repo is gone, the developer left, or the stack is legacy. Get the code back in a modern format
-- **"Make it look like this"** — client sends a reference site. Use it as a visual starting point to build theirs faster instead of starting from a blank page.
 - **Learning** — deconstruct how production sites achieve specific layouts, animations, and responsive behavior by working with real code
 
 ## Not Intended For
@@ -140,9 +139,6 @@ Two source-of-truth files power all platform support. Edit the source, then run 
 
 Each script regenerates the platform-specific copies automatically. Agents that read the source files natively need no regeneration.
 
-## Defaults
-
-`/clone-website <url1> [<url2> ...]` defaults to a pixel-perfect clone of whatever pages are at the provided URLs.
 
 ## Star History
 
