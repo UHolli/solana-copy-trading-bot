@@ -2,7 +2,7 @@
 
 <a href="https://github.com/JCodesMore/ai-website-cloner-template/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License" /></a> <a href="https://github.com/JCodesMore/ai-website-cloner-template/stargazers"><img src="https://img.shields.io/github/stars/JCodesMore/ai-website-cloner-template?style=flat" alt="Stars" /></a> <a href="https://discord.gg/hrTSX5yTpB"><img src="https://img.shields.io/discord/1400896964597383279?label=discord" alt="Discord" /></a>
 
-A reusable template for reverse-engineering any website and rebuilding it as a pixel-perfect clone using AI coding agents. **Recommended: [Claude Code](https://docs.anthropic.com/en/docs/claude-code) with Opus 4.6 for best results** — but works with a variety of AI coding agents.
+A reusable template for reverse-engineering any website into a clean, typed Next.js codebase using AI coding agents. **Recommended: [Claude Code](https://docs.anthropic.com/en/docs/claude-code) with Opus 4.6 for best results** — but works with a variety of AI coding agents.
 
 Point it at a URL, run `/clone-website`, and your AI agent will inspect the site, extract design tokens and assets, write component specs, and dispatch parallel builders to reconstruct every section.
 
@@ -77,6 +77,19 @@ The `/clone-website` skill runs a multi-phase pipeline:
 5. **Assembly & QA** — merges worktrees, wires up the page, runs visual diff against the original
 
 Each builder agent receives the full component specification inline — exact `getComputedStyle()` values, interaction models, multi-state content, responsive breakpoints, and asset paths. No guessing.
+
+## Use Cases
+
+- **Platform migration** — rebuild a site you own from WordPress/Webflow/Squarespace into a modern Next.js codebase
+- **Lost source code** — your site is live but the repo is gone, the developer left, or the stack is legacy. Get the code back in a modern format
+- **"Make it look like this"** — client sends a reference site. Use it as a visual starting point to build theirs faster instead of starting from a blank page.
+- **Learning** — deconstruct how production sites achieve specific layouts, animations, and responsive behavior by working with real code
+
+## Not Intended For
+
+- **Phishing or impersonation** — this project must not be used for deceptive purposes, impersonation, or any activity that breaks the law.
+- **Passing off someone's design as your own** — logos, brand assets, and original copy belong to their owners.
+- **Violating terms of service** — some sites explicitly prohibit scraping or reproduction. Check first.
 
 ## Project Structure
 
