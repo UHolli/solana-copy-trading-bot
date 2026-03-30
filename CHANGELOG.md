@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-03-29
+
+### Added
+- Multi-URL support for `/clone-website` — clone multiple sites in a single command with parallel processing and isolated output
+- CI quality gates via GitHub Actions — automated lint, typecheck, and build on every push and PR
+- `npm run typecheck` and `npm run check` scripts for local quality validation
+- `.gitattributes` for cross-platform line ending normalization
+- `.nvmrc` to pin Node.js 20 for contributor consistency
+
+### Changed
+- Streamlined PR template — removed redundant checklist items and screenshots section
+- Improved project description and README — clearer use cases, limitations, and modern wording
+- Refined documentation and agent rules across all platforms for clarity and consistency
+- Fixed CRLF handling in `sync-skills.mjs` for reliable Windows operation
+
+### Removed
+- Outdated use case from README documentation
+
 ## [0.2.0] - 2026-03-28
 
 ### Added
@@ -45,3 +63,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Next.js 16 + shadcn/ui + Tailwind CSS v4 base scaffold
 - MIT license
 - README with badges, demo section, quick start, and star history
+
+[Unreleased]: https://github.com/JCodesMore/ai-website-cloner-template/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/JCodesMore/ai-website-cloner-template/compare/v0.2.0...v0.3.0
+[0.2.0]: https://github.com/JCodesMore/ai-website-cloner-template/compare/v0.1.1...v0.2.0
+[0.1.1]: https://github.com/JCodesMore/ai-website-cloner-template/compare/v0.1.0...v0.1.1
+[0.1.0]: https://github.com/JCodesMore/ai-website-cloner-template/releases/tag/v0.1.0

@@ -18,7 +18,7 @@ const SOURCE = join(ROOT, '.claude', 'skills', 'clone-website', 'SKILL.md');
 
 let raw;
 try {
-  raw = readFileSync(SOURCE, 'utf8');
+  raw = readFileSync(SOURCE, 'utf8').replace(/\r\n/g, '\n');
 } catch {
   console.error(`Error: Source skill not found at .claude/skills/clone-website/SKILL.md`);
   process.exit(1);
