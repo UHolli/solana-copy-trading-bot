@@ -5,9 +5,9 @@
 # ============================================
 
 # IMPORTANT: Node.js Version Maintenance
-# This Dockerfile defaults to Node.js 20.20.2-slim to match the repo's Node 20 baseline used in CI and local development.
+# This Dockerfile defaults to Node.js 24.14.1-slim to match the repo's Node 24 baseline.
 # To ensure security and compatibility, update the NODE_VERSION ARG when the project's Node baseline changes.
-ARG NODE_VERSION=20.20.2-slim
+ARG NODE_VERSION=24.14.1-slim
 
 FROM node:${NODE_VERSION} AS dependencies
 

@@ -68,7 +68,7 @@ body:
     attributes:
       label: Node.js Version
       description: Run `node -v` to find this.
-      placeholder: v20.x.x
+      placeholder: v24.x.x
     validations:
       required: true
 

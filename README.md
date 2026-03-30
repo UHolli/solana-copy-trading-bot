@@ -57,7 +57,7 @@ Point it at a URL, run `/clone-website`, and your AI agent will inspect the site
 
 ## Prerequisites
 
-- [Node.js](https://nodejs.org/) 20+
+- [Node.js](https://nodejs.org/) 24+
 - An AI coding agent (see [Supported Platforms](#supported-platforms))
 
 ## Tech Stack
