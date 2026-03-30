@@ -7,7 +7,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 # Website Reverse-Engineer Template
 
 ## What This Is
-A reusable template for reverse-engineering any website and rebuilding it as a faithful clone using Claude Code. The Next.js + shadcn/ui + Tailwind v4 base is pre-scaffolded — just run `/clone-website <url>`.
+A reusable template for reverse-engineering any website into a clean, modern Next.js codebase using AI coding agents. The Next.js + shadcn/ui + Tailwind v4 base is pre-scaffolded — just run `/clone-website <url1> [<url2> ...]`.
 
 ## Tech Stack
 - **Framework:** Next.js 16 (App Router, React 19, TypeScript strict)
@@ -20,6 +20,8 @@ A reusable template for reverse-engineering any website and rebuilding it as a f
 - `npm run dev` — Start dev server
 - `npm run build` — Production build
 - `npm run lint` — ESLint check
+- `npm run typecheck` — TypeScript check
+- `npm run check` — Run lint + typecheck + build
 
 ## Code Style
 - TypeScript strict mode, no `any`
