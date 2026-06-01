@@ -16,24 +16,40 @@ Point it at a URL, run `/clone-website`, and your AI agent will inspect the site
 
 ## Quick Start
 
-1. **Clone this repository**
+> **Important:** Start by making your own copy with GitHub's **Use this template** button. Do not clone this template repository directly for your website project, and do not open pull requests here with your generated website.
+
+1. **Create your own repository from this template**
+
+   On the GitHub page for this project, click **Use this template**, then click **Create a new repository**.
+
+   Give your new repository a name, choose whether it should be public or private, then click **Create repository**. If GitHub shows an **Include all branches** option, you can leave it off.
+
+   This gives you your own separate project to work in, so your website changes stay in your account instead of coming back to the main template.
+
+2. **Open your new repository on your computer**
+
+   After GitHub creates your copy, open that new repository. Click **Code** and open or clone your new repository with your preferred coding tool.
+
+   If you use the terminal, the command will look like this:
+
    ```bash
-   git clone https://github.com/JCodesMore/ai-website-cloner-template.git my-clone
-   cd my-clone
+   git clone https://github.com/YOUR-USERNAME/YOUR-NEW-REPOSITORY.git
+   cd YOUR-NEW-REPOSITORY
    ```
-2. **Install dependencies**
+
+3. **Install dependencies**
    ```bash
    npm install
    ```
-3. **Start your AI agent** — Claude Code recommended:
+4. **Start your AI agent** — Claude Code recommended:
    ```bash
    claude --chrome
    ```
-4. **Run the skill**:
+5. **Run the skill**:
    ```
    /clone-website <target-url1> [<target-url2> ...]
    ```
-5. **Customize** (optional) — after the base clone is built, modify as needed
+6. **Customize** (optional) — after the base clone is built, modify as needed
 
 > Using a different agent? Open `AGENTS.md` for project instructions — most agents pick it up automatically.
 
