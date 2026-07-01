@@ -9,9 +9,8 @@
 
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const ROOT = process.cwd();
 const SOURCE = join(ROOT, ".claude", "skills", "clone-website", "SKILL.md");
 
 const AUTO_GENERATED_HEADER =

@@ -25,41 +25,32 @@ function parsePositiveInt(
   return Number.isFinite(parsed) && parsed > 0 ? parsed : defaultValue;
 }
 
-function loadRedisConfig(): RedisConfig {
-  return {
-    enabled: parseBoolean(process.env.REDIS_ENABLED, false),
-    url: process.env.REDIS_URL ?? "redis://127.0.0.1:6379",
-    keyPrefix: process.env.REDIS_KEY_PREFIX ?? "website-cloner:",
-    connectTimeoutMs: parsePositiveInt(
-      process.env.REDIS_CONNECT_TIMEOUT_MS,
-      10_000,
-    ),
-    maxRetries: parsePositiveInt(process.env.REDIS_MAX_RETRIES, 5),
-    defaultTtlSeconds: parsePositiveInt(
-      process.env.REDIS_DEFAULT_TTL_SECONDS,
-      86_400,
-    ),
-  };
-}
-
 /** Load application configuration from environment variables. */
 export function loadAppConfig(
   env: NodeJS.ProcessEnv = process.env,
 ): AppConfig {
   return {
     logLevel: parseLogLevel(env.LOG_LEVEL),
-    redis: {
-      enabled: parseBoolean(env.REDIS_ENABLED, false),
-      url: env.REDIS_URL ?? "redis://127.0.0.1:6379",
-      keyPrefix: env.REDIS_KEY_PREFIX ?? "website-cloner:",
-      connectTimeoutMs: parsePositiveInt(env.REDIS_CONNECT_TIMEOUT_MS, 10_000),
-      maxRetries: parsePositiveInt(env.REDIS_MAX_RETRIES, 5),
-      defaultTtlSeconds: parsePositiveInt(
-        env.REDIS_DEFAULT_TTL_SECONDS,
-        86_400,
-      ),
-    },
+    redis: loadRedisConfigFromEnv(env),
   };
+}
+
+function loadRedisConfigFromEnv(env: NodeJS.ProcessEnv): RedisConfig {
+  return {
+    enabled: parseBoolean(env.REDIS_ENABLED, false),
+    url: env.REDIS_URL ?? "redis://127.0.0.1:6379",
+    keyPrefix: env.REDIS_KEY_PREFIX ?? "website-cloner:",
+    connectTimeoutMs: parsePositiveInt(env.REDIS_CONNECT_TIMEOUT_MS, 10_000),
+    maxRetries: parsePositiveInt(env.REDIS_MAX_RETRIES, 5),
+    defaultTtlSeconds: parsePositiveInt(env.REDIS_DEFAULT_TTL_SECONDS, 86_400),
+  };
+}
+
+/** @deprecated Use loadAppConfig().redis instead */
+export function loadRedisConfig(
+  env: NodeJS.ProcessEnv = process.env,
+): RedisConfig {
+  return loadRedisConfigFromEnv(env);
 }
 
 /** Cached singleton configuration for server runtime. */
@@ -74,5 +65,3 @@ export function getAppConfig(): AppConfig {
 export function resetAppConfigCache(): void {
   cachedConfig = undefined;
 }
-
-export { loadRedisConfig };
