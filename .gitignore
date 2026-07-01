@@ -48,3 +48,7 @@ next-env.d.ts
 
 # Local temp files
 temp/
+coverage/
+
+# Lockfiles (install locally)
+package-lock.json
