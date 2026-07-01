@@ -7,8 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-07-01
+
+### Added
+- Optional Redis-backed cache layer with connection manager, retry strategy, and graceful shutdown
+- In-memory cache fallback for local development without external services
+- Cache HTTP API at `/api/cache/status` and `/api/cache/sessions`
+- Vitest test suite for configuration, memory cache, and Redis store (mocked)
+- Typed configuration, logging, and application error modules under `src/lib/`
+- `.env.example` documenting all runtime environment variables
+- Redis service in Docker Compose with health checks
+- Internal engineering audit at `docs/internal/AUDIT.md`
+
 ### Changed
-- Raised the project Node.js baseline to 24 across local development, CI, Docker, and contributor-facing documentation
+- README redesigned with Mermaid architecture and workflow diagrams
+- `sync-skills` build script converted from JavaScript to TypeScript
+- TypeScript compiler tightened (`noUnusedLocals`, `noUnusedParameters`, no `allowJs`)
+- CI pipeline runs tests and uses `npm install` (lockfile gitignored)
+- `npm run validate` runs lint, typecheck, test, and build
+- `AGENTS.md` updated with cache and test commands
+
+### Removed
+- `package-lock.json` from version control
 
 ## [0.3.1] - 2026-03-29
 

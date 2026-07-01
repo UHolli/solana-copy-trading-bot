@@ -38,3 +38,7 @@ The application is intentionally a **starter shell**. Core value lives in agent 
 8. Redesign README with architecture/workflow Mermaid diagrams.
 9. Add `.env.example` and Redis service to docker-compose.
 10. Extend CI to run tests.
+
+## Status (2026-07-01)
+
+All recommended improvements above have been implemented in v0.4.0 except ongoing agent-skill maintenance (inherent to the template lifecycle).
