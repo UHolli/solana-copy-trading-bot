@@ -1,171 +1,355 @@
-# AI Website Cloner Template
+# Website Cloner — Next.js Agent Template
 
-<a href="https://github.com/JCodesMore/ai-website-cloner-template/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License" /></a> <a href="https://github.com/JCodesMore/ai-website-cloner-template/stargazers"><img src="https://img.shields.io/github/stars/JCodesMore/ai-website-cloner-template?style=flat" alt="Stars" /></a> <a href="https://discord.gg/hrTSX5yTpB"><img src="https://img.shields.io/discord/1400896964597383279?label=discord" alt="Discord" /></a>
+A production-oriented starter for rebuilding live websites as typed Next.js applications with AI coding agents. The template ships a strict TypeScript toolchain, optional Redis-backed session persistence, and multi-platform agent skills so `/clone-website` workflows stay reproducible across teams.
 
-A reusable template for reverse-engineering any website into a clean, modern Next.js codebase using AI coding agents. 
+> **Start from your own copy.** Use GitHub **Use this template** to create a separate repository. Do not commit generated clone output back to this upstream template.
 
-**Recommended: [Claude Code](https://docs.anthropic.com/en/docs/claude-code) with Opus 4.7 for best results** — but works with a variety of AI coding agents.
+---
 
-Point it at a URL, run `/clone-website`, and your AI agent will inspect the site, extract design tokens and assets, write component specs, and dispatch parallel builders to reconstruct every section.
+## Table of contents
 
-## Demo
+- [Why this template](#why-this-template)
+- [System architecture](#system-architecture)
+- [Clone workflow](#clone-workflow)
+- [Features](#features)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Development](#development)
+- [Testing](#testing)
+- [Project structure](#project-structure)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
+- [FAQ](#faq)
+- [License](#license)
 
-[![Watch the demo](docs/design-references/comparison.png)](https://youtu.be/O669pVZ_qr0)
+---
 
-> Click the image above to watch the full demo on YouTube.
+## Why this template
 
-## Quick Start
+Most website rebuilds fail in the handoff between design extraction and component implementation. This repository standardizes that boundary:
 
-> **Important:** Start by making your own copy with GitHub's **Use this template** button. Do not clone this template repository directly for your website project, and do not open pull requests here with your generated website.
+| Concern | Approach |
+|---------|----------|
+| Agent instructions | Single source in `AGENTS.md`, synced to 10+ platforms |
+| Design fidelity | Component specs with computed CSS values in `docs/research/` |
+| Runtime quality | Strict TypeScript, ESLint, Vitest, and CI validation |
+| Session continuity | Optional Redis cache for multi-step clone pipelines |
+| Deployment | Standalone Next.js output with Docker Compose |
 
-1. **Create your own repository from this template**
+---
 
-   On the GitHub page for this project, click **Use this template**, then click **Create a new repository**.
+## System architecture
 
-   Give your new repository a name, choose whether it should be public or private, then click **Create repository**. If GitHub shows an **Include all branches** option, you can leave it off.
+```mermaid
+flowchart TB
+  subgraph agents [AI Coding Agents]
+    CC[Claude Code]
+    CX[Codex / Cursor / Copilot]
+    Others[Gemini / Windsurf / ...]
+  end
 
-   This gives you your own separate project to work in, so your website changes stay in your account instead of coming back to the main template.
+  subgraph template [Template Repository]
+    SKILL["/clone-website skill"]
+    AGENTS[AGENTS.md rules]
+    APP[Next.js App Router]
+    CACHE[Cache layer]
+    API["/api/cache/*"]
+  end
 
-2. **Open your new repository on your computer**
+  subgraph persistence [Optional Persistence]
+    MEM[(In-memory store)]
+    REDIS[(Redis)]
+  end
 
-   After GitHub creates your copy, open that new repository. Click **Code** and open or clone your new repository with your preferred coding tool.
+  subgraph output [Generated Clone]
+    COMP[React components]
+    ASSETS[public/images + seo]
+    SPECS[docs/research/components]
+  end
 
-   If you use the terminal, the command will look like this:
-
-   ```bash
-   git clone https://github.com/YOUR-USERNAME/YOUR-NEW-REPOSITORY.git
-   cd YOUR-NEW-REPOSITORY
-   ```
-
-3. **Install dependencies**
-   ```bash
-   npm install
-   ```
-4. **Start your AI agent** — Claude Code recommended:
-   ```bash
-   claude --chrome
-   ```
-5. **Run the skill**:
-   ```
-   /clone-website <target-url1> [<target-url2> ...]
-   ```
-6. **Customize** (optional) — after the base clone is built, modify as needed
-
-> Using a different agent? Open `AGENTS.md` for project instructions — most agents pick it up automatically.
-
-## Supported Platforms
-
-| Agent                                                         | Status                     |
-| ------------------------------------------------------------- | -------------------------- |
-| [Claude Code](https://docs.anthropic.com/en/docs/claude-code) | **Recommended** — Opus 4.7 |
-| [Codex CLI](https://github.com/openai/codex)                  | Supported                  |
-| [OpenCode](https://opencode.ai/)                              | Supported                  |
-| [GitHub Copilot](https://github.com/features/copilot)         | Supported                  |
-| [Cursor](https://cursor.com/)                                 | Supported                  |
-| [Windsurf](https://codeium.com/windsurf)                      | Supported                  |
-| [Gemini CLI](https://github.com/google-gemini/gemini-cli)     | Supported                  |
-| [Cline](https://github.com/cline/cline)                       | Supported                  |
-| [Roo Code](https://github.com/RooCodeInc/Roo-Code)            | Supported                  |
-| [Continue](https://continue.dev/)                             | Supported                  |
-| [Amazon Q](https://aws.amazon.com/q/developer/)               | Supported                  |
-| [Augment Code](https://www.augmentcode.com/)                  | Supported                  |
-| [Aider](https://aider.chat/)                                  | Supported                  |
-
-## Prerequisites
-
-- [Node.js](https://nodejs.org/) 24+
-- An AI coding agent (see [Supported Platforms](#supported-platforms))
-
-## Tech Stack
-
-- **Next.js 16** — App Router, React 19, TypeScript strict
-- **shadcn/ui** — Radix primitives + Tailwind CSS v4
-- **Tailwind CSS v4** — oklch design tokens
-- **Lucide React** — default icons (replaced by extracted SVGs during cloning)
-
-## How It Works
-
-The `/clone-website` skill runs a multi-phase pipeline:
-
-1. **Reconnaissance** — screenshots, design token extraction, interaction sweep (scroll, click, hover, responsive)
-2. **Foundation** — updates fonts, colors, globals, downloads all assets
-3. **Component Specs** — writes detailed spec files (`docs/research/components/`) with exact computed CSS values, states, behaviors, and content
-4. **Parallel Build** — dispatches builder agents in git worktrees, one per section/component
-5. **Assembly & QA** — merges worktrees, wires up the page, runs visual diff against the original
-
-Each builder agent receives the full component specification inline — exact `getComputedStyle()` values, interaction models, multi-state content, responsive breakpoints, and asset paths. No guessing.
-
-## Use Cases
-
-- **Platform migration** — rebuild a site you own from WordPress/Webflow/Squarespace into a modern Next.js codebase
-- **Lost source code** — your site is live but the repo is gone, the developer left, or the stack is legacy. Get the code back in a modern format
-- **Learning** — deconstruct how production sites achieve specific layouts, animations, and responsive behavior by working with real code
-
-## Not Intended For
-
-- **Phishing or impersonation** — this project must not be used for deceptive purposes, impersonation, or any activity that breaks the law.
-- **Passing off someone's design as your own** — logos, brand assets, and original copy belong to their owners.
-- **Violating terms of service** — some sites explicitly prohibit scraping or reproduction. Check first.
-
-## Project Structure
-
-```
-src/
-  app/              # Next.js routes
-  components/       # React components
-    ui/             # shadcn/ui primitives
-    icons.tsx       # Extracted SVG icons
-  lib/utils.ts      # cn() utility
-  types/            # TypeScript interfaces
-  hooks/            # Custom React hooks
-public/
-  images/           # Downloaded images from target
-  videos/           # Downloaded videos from target
-  seo/              # Favicons, OG images
-docs/
-  research/         # Extraction output & component specs
-  design-references/ # Screenshots
-scripts/
-  sync-agent-rules.sh  # Regenerate agent instruction files
-  sync-skills.mjs      # Regenerate /clone-website for all platforms
-AGENTS.md           # Agent instructions (single source of truth)
-CLAUDE.md           # Claude Code config (imports AGENTS.md)
-GEMINI.md           # Gemini CLI config (imports AGENTS.md)
+  agents --> SKILL
+  SKILL --> AGENTS
+  AGENTS --> APP
+  APP --> API
+  API --> CACHE
+  CACHE --> MEM
+  CACHE --> REDIS
+  SKILL --> SPECS
+  SPECS --> COMP
+  SKILL --> ASSETS
 ```
 
-## Commands
+### Cache layer
+
+```mermaid
+sequenceDiagram
+  participant Agent
+  participant API as /api/cache/sessions
+  participant Service as CacheService
+  participant Backend as Memory or Redis
+
+  Agent->>API: POST session metadata
+  API->>Service: saveCloneSession()
+  Service->>Backend: SET session:{id}
+  Backend-->>Service: OK
+  Service-->>API: session record
+  API-->>Agent: 201 Created
+
+  Agent->>API: GET ?id=session-1
+  API->>Service: getCloneSession()
+  Service->>Backend: GET session:{id}
+  Backend-->>Service: JSON payload
+  Service-->>API: CloneSessionRecord
+  API-->>Agent: 200 OK
+```
+
+---
+
+## Clone workflow
+
+```mermaid
+flowchart LR
+  A[Reconnaissance] --> B[Foundation]
+  B --> C[Component specs]
+  C --> D[Parallel builders]
+  D --> E[Assembly and QA]
+
+  A --- A1[Screenshots + tokens]
+  B --- B1[Fonts, globals, assets]
+  C --- C1[docs/research/components]
+  D --- D1[Git worktrees per section]
+  E --- E1[Visual diff + merge]
+```
+
+Run inside your agent:
+
+```text
+/clone-website https://example.com
+```
+
+Phases are defined in `.claude/skills/clone-website/SKILL.md` and propagated to other platforms via `npm run sync:skills`.
+
+---
+
+## Features
+
+- **Strict TypeScript** — `noUnusedLocals`, no `allowJs`, separate configs for app, scripts, and tests
+- **Optional Redis persistence** — connection manager with retry, graceful shutdown, and typed config
+- **In-memory fallback** — zero external services required for local development
+- **Cache HTTP API** — health probe and clone-session CRUD at `/api/cache/*`
+- **Multi-platform skills** — one skill source, nine generated platform targets
+- **Docker Compose stack** — app, dev, and Redis services with health checks
+- **CI pipeline** — lint, typecheck, test, and build on every push
+
+---
+
+## Requirements
+
+| Tool | Version |
+|------|---------|
+| Node.js | 24+ (see `.nvmrc`) |
+| npm | 10+ |
+| Redis | 7+ (optional, via Docker Compose) |
+| AI agent | Claude Code recommended; see `AGENTS.md` |
+
+---
+
+## Installation
 
 ```bash
-npm run dev    # Start dev server
-npm run build  # Production build
-npm run lint   # ESLint check
-npm run typecheck # TypeScript check
-npm run check  # Run lint + typecheck + build
+# 1. Create your repository from the GitHub template UI
+
+# 2. Clone your copy
+git clone https://github.com/YOUR-ORG/YOUR-REPO.git
+cd YOUR-REPO
+
+# 3. Install dependencies (lockfile is local-only)
+npm install
+
+# 4. Copy environment defaults
+cp .env.example .env
+
+# 5. Start the dev server
+npm run dev
 ```
 
-### If using docker
+Open [http://localhost:3000](http://localhost:3000). The placeholder page prompts you to run `/clone-website`.
+
+### Docker
 
 ```bash
-docker compose up app --build # build and run the app
-docker compose up dev --build # run the app in dev mode on port 3001
+# Production-like container
+docker compose up app --build
+
+# Dev container with bind mount (port 3001 by default)
+docker compose up dev --build
+
+# Enable Redis-backed cache
+REDIS_ENABLED=true docker compose up app redis --build
 ```
 
-## Updating for Other Platforms
+---
 
-Two source-of-truth files power all platform support. Edit the source, then run the sync script:
+## Configuration
 
-| What                   | Source of truth                         | Sync command                       |
-| ---------------------- | --------------------------------------- | ---------------------------------- |
-| Project instructions   | `AGENTS.md`                             | `bash scripts/sync-agent-rules.sh` |
-| `/clone-website` skill | `.claude/skills/clone-website/SKILL.md` | `node scripts/sync-skills.mjs`     |
+Environment variables (see `.env.example`):
 
-Each script regenerates the platform-specific copies automatically. Agents that read the source files natively need no regeneration.
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `LOG_LEVEL` | `info` | Application log level (`debug` … `error`) |
+| `REDIS_ENABLED` | `false` | Use Redis instead of in-memory cache |
+| `REDIS_URL` | `redis://127.0.0.1:6379` | Redis connection URL |
+| `REDIS_KEY_PREFIX` | `website-cloner:` | Namespace for cache keys |
+| `REDIS_CONNECT_TIMEOUT_MS` | `10000` | Connection timeout |
+| `REDIS_MAX_RETRIES` | `5` | Reconnect attempts |
+| `REDIS_DEFAULT_TTL_SECONDS` | `86400` | Default entry TTL (24 h) |
+| `PORT` | `3000` | Production container port mapping |
+| `DEV_PORT` | `3001` | Dev container port mapping |
 
+### Cache API examples
 
-## Star History
+```bash
+# Health check
+curl http://localhost:3000/api/cache/status
 
-[![Star History Chart](https://api.star-history.com/svg?repos=JCodesMore/ai-website-cloner-template&type=Date)](https://star-history.com/#JCodesMore/ai-website-cloner-template&Date)
+# Save clone session metadata
+curl -X POST http://localhost:3000/api/cache/sessions \
+  -H "Content-Type: application/json" \
+  -d '{"session":{"id":"demo","targetUrl":"https://example.com","status":"pending","createdAt":"2026-01-01T00:00:00.000Z","updatedAt":"2026-01-01T00:00:00.000Z"}}'
+
+# Load session
+curl "http://localhost:3000/api/cache/sessions?id=demo"
+```
+
+---
+
+## Development
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Next.js development server |
+| `npm run build` | Production build (standalone) |
+| `npm run start` | Serve production build |
+| `npm run lint` | ESLint across app, scripts, and tests |
+| `npm run typecheck` | TypeScript for app, scripts, and tests |
+| `npm run test` | Vitest unit tests |
+| `npm run validate` | lint + typecheck + test + build |
+| `npm run sync:skills` | Regenerate platform clone-website files |
+| `npm run sync:agents` | Regenerate platform agent rule files |
+
+### Sync workflow
+
+| Source of truth | Generated targets | Command |
+|-----------------|-------------------|---------|
+| `AGENTS.md` | Copilot, Cline, Continue, Amazon Q | `npm run sync:agents` |
+| `.claude/skills/clone-website/SKILL.md` | Codex, Cursor, Gemini, … | `npm run sync:skills` |
+
+Internal audit notes: [`docs/internal/AUDIT.md`](docs/internal/AUDIT.md).
+
+---
+
+## Testing
+
+Tests live under `tests/` and run with Vitest:
+
+```bash
+npm test           # single run
+npm run test:watch # watch mode
+```
+
+Coverage includes:
+
+- Environment configuration parsing
+- In-memory cache TTL and CRUD behavior
+- Redis store operations (mocked client)
+- Clone session helper functions
+
+CI executes the same suite on Node 24 for every pull request.
+
+---
+
+## Project structure
+
+```
+.
+├── src/
+│   ├── app/                 # Next.js routes and API handlers
+│   │   └── api/cache/       # Cache health + session endpoints
+│   ├── components/ui/       # shadcn/ui primitives
+│   ├── hooks/               # Shared React hooks (scaffold)
+│   ├── lib/
+│   │   ├── cache/           # Memory + Redis cache backends
+│   │   ├── config/          # Typed environment configuration
+│   │   ├── errors/          # Application error types
+│   │   └── logger/          # Structured logging utility
+│   └── types/               # Shared TypeScript interfaces
+├── tests/cache/             # Vitest unit tests
+├── scripts/                 # TypeScript build/sync tooling
+├── docs/
+│   ├── internal/            # Engineering audit notes
+│   └── research/            # Agent extraction output (generated)
+├── .claude/skills/          # Canonical clone-website skill
+├── docker-compose.yml       # app + dev + redis services
+├── vitest.config.ts
+├── tsconfig.json            # App compiler config
+├── tsconfig.scripts.json    # Scripts compiler config
+└── tsconfig.test.json       # Test compiler config
+```
+
+**Design decisions**
+
+- `src/lib/cache/` isolates persistence from API routes so agents can reuse cache logic in scripts.
+- `tests/` is top-level (not colocated) to keep production bundles lean.
+- Lockfiles are intentionally gitignored; CI uses `npm install`.
+
+---
+
+## Troubleshooting
+
+| Symptom | Likely cause | Fix |
+|---------|--------------|-----|
+| `Redis is disabled` API error | `REDIS_ENABLED=false` | Set `REDIS_ENABLED=true` and start Redis |
+| Cache ping returns 503 | Redis unreachable | Check `REDIS_URL`, run `docker compose up redis` |
+| `Session-store bridge not found` (legacy docs) | Outdated instructions | Use `/api/cache/status` instead |
+| Typecheck fails on scripts | Wrong working directory | Run commands from repository root |
+| ESLint ignores tests | Stale config | Ensure `eslint .` includes `tests/` |
+| Docker healthcheck fails | App still compiling | Increase `start_period` in compose file |
+| Agent cannot find skill | Platform copy stale | Run `npm run sync:skills` |
+
+---
+
+## Contributing
+
+1. Fork the template and create a feature branch.
+2. Run `npm install && npm run validate` before opening a PR.
+3. Keep commits focused; avoid unrelated refactors.
+4. Update `.env.example` when adding configuration keys.
+5. Regenerate platform files if you edit `AGENTS.md` or the clone skill.
+
+Pull requests should include a test plan listing commands run and any manual verification steps.
+
+---
+
+## FAQ
+
+**Do I need Redis?**  
+No. The default in-memory backend works for single-machine agent runs. Enable Redis when multiple agents or CI runners share clone session state.
+
+**Can I use this without Claude Code?**  
+Yes. Run `npm run sync:skills` after editing the canonical skill. Most agents read `AGENTS.md` or their platform-specific copy automatically.
+
+**Will this copy any website automatically?**  
+No. The template provides scaffolding and agent instructions. A coding agent still performs extraction, spec writing, and component generation.
+
+**Is scraping always legal?**  
+No. Verify ownership, licensing, and target site terms before cloning. See the ethical use section in `AGENTS.md`.
+
+**Why is `package-lock.json` ignored?**  
+This template optimizes for fork-level dependency resolution. Generate the lockfile locally with `npm install`.
+
+---
 
 ## License
 
-MIT
+MIT — see [LICENSE](LICENSE).
