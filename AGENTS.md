@@ -19,9 +19,18 @@ A reusable template for reverse-engineering any website into a clean, modern Nex
 ## Commands
 - `npm run dev` — Start dev server
 - `npm run build` — Production build
+- `npm run start` — Serve production build
 - `npm run lint` — ESLint check
-- `npm run typecheck` — TypeScript check
-- `npm run check` — Run lint + typecheck + build
+- `npm run typecheck` — TypeScript check (app, scripts, tests)
+- `npm run test` — Vitest unit tests
+- `npm run validate` — lint + typecheck + test + build
+- `npm run sync:skills` — Regenerate clone-website skill for all platforms
+- `npm run sync:agents` — Regenerate platform agent instruction files
+
+## Cache & Sessions
+- Optional Redis-backed cache via `REDIS_*` environment variables (see `.env.example`)
+- In-memory fallback when Redis is disabled
+- HTTP API: `GET /api/cache/status`, `GET|POST /api/cache/sessions`
 
 ## Code Style
 - TypeScript strict mode, no `any`
@@ -45,6 +54,10 @@ src/
     icons.tsx       # Extracted SVG icons as React components
   lib/
     utils.ts        # cn() utility (shadcn)
+    cache/          # Memory + Redis cache backends
+    config/         # Typed environment configuration
+    errors/         # Application error types
+    logger/         # Structured logging
   types/            # TypeScript interfaces
   hooks/            # Custom React hooks
 public/
@@ -59,7 +72,7 @@ scripts/            # Asset download scripts
 
 ## MOST IMPORTANT NOTES
 - When launching Claude Code agent teams, ALWAYS have each teammate work in their own worktree branch and merge everyone's work at the end, resolving any merge conflicts smartly since you are basically serving the orchestrator role and have full context to our goals, work given, work achieved, and desired outcomes.
-- After editing `AGENTS.md`, run `bash scripts/sync-agent-rules.sh` to regenerate platform-specific instruction files.
-- After editing `.claude/skills/clone-website/SKILL.md`, run `node scripts/sync-skills.mjs` to regenerate the skill for all platforms.
+- After editing `AGENTS.md`, run `npm run sync:agents` to regenerate platform-specific instruction files.
+- After editing `.claude/skills/clone-website/SKILL.md`, run `npm run sync:skills` to regenerate the skill for all platforms.
 
 @docs/research/INSPECTION_GUIDE.md
