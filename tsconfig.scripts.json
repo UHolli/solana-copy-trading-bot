@@ -8,6 +8,6 @@
     "jsx": "preserve",
     "plugins": []
   },
-  "include": ["scripts/**/*.ts"],
+  "include": ["src/scripts/**/*.ts"],
   "exclude": ["node_modules"]
 }

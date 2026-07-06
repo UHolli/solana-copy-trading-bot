@@ -34,7 +34,7 @@
     "typecheck": "tsc --noEmit && tsc -p tsconfig.scripts.json --noEmit && tsc -p tsconfig.test.json --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "sync:skills": "tsx scripts/sync-skills.ts",
+    "sync:skills": "tsx src/scripts/sync-skills.ts",
     "sync:agents": "bash scripts/sync-agent-rules.sh",
     "validate": "npm run lint && npm run typecheck && npm run test && npm run build"
   },
